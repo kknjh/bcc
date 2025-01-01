@@ -260,11 +260,12 @@ TRACEPOINT_PROBE(compaction, mm_compaction_end)
 }
 """
 
-if platform.machine() != 'x86_64' and platform.machine() != 'ppc64le':
+if (platform.machine() != 'x86_64' and platform.machine() != 'ppc64le'
+    and platform.machine() != 'aarch64'):
     print("""
-          Currently only support x86_64 and power servers, if you want
+          Currently only support x86_64 , aarch64 and power servers, if you want
           to use it on other platforms(including power embedded processors),
-          please refer include/linux/mmzone.h to modify zone_idex_to_str to
+          please refer include/linux/mmzone.h to modify zone_idx_to_str to
           get the right zone type
     """)
     exit()
@@ -308,6 +309,14 @@ def zone_idx_to_str(idx):
                     {
                         0: "ZONE_NORMAL",
                         1: "ZONE_MOVABLE"
+                    },
+            'aarch64':
+                    {
+                        0: "ZONE_DMA",
+                        1: "ZONE_DMA32",
+                        2: "ZONE_NORMAL",
+                        3: "ZONE_MOVABLE",
+                        4: "ZONE_DEVICE"
                     }
     }
 
